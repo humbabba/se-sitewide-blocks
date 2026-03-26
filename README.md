@@ -47,7 +47,7 @@ Each block has its own preview URL (`/block/{slug}/`) that renders the content w
 
 ## Installation
 
-1. Download or clone this repository into `wp-content/plugins/se-sitewide-block/`
+1. Download or clone this repository into `wp-content/plugins/sitewide-blocks/`
 2. Activate the plugin in **Plugins → Installed Plugins**
 3. Go to **Sitewide Blocks** in the admin menu to create your first block
 

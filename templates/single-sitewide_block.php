@@ -21,7 +21,7 @@ while ( have_posts() ) :
     <?php wp_head(); ?>
 </head>
 <body style="margin:0;padding:0;">
-    <div class="se-sitewide-block se-sitewide-block--preview">
+    <div class="sitewide-blocks sitewide-blocks--preview">
         <?php the_content(); ?>
     </div>
     <?php wp_footer(); ?>

@@ -1,12 +1,12 @@
 <?php
 /**
- * Plugin Name: SE Sitewide Block
+ * Plugin Name: SE Sitewide Blocks
  * Description: Custom post type for scheduled, location-aware sitewide block content.
  * Version:     1.0.0
- * Plugin URI:  https://github.com/humbabba/se-sitewide-blocks
+ * Plugin URI:  https://github.com/humbabba/sitewide-blocks
  * Author:      Charles Gray
  * Author URI:  https://humbabba.com/portfolio
- * Text Domain: se-sitewide-block
+ * Text Domain: sitewide-blocks
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -17,7 +17,7 @@ define( 'SE_BLOCK_PATH', plugin_dir_path( __FILE__ ) );
 
 add_filter( 'plugin_row_meta', function ( $links, $file ) {
     if ( plugin_basename( __FILE__ ) === $file ) {
-        $links[] = '<a href="https://github.com/humbabba/se-sitewide-blocks#readme">' . __( 'Docs', 'se-sitewide-block' ) . '</a>';
+        $links[] = '<a href="https://github.com/humbabba/sitewide-blocks#readme">' . __( 'Docs', 'sitewide-blocks' ) . '</a>';
     }
     return $links;
 }, 10, 2 );
@@ -27,10 +27,10 @@ add_filter( 'plugin_row_meta', function ( $links, $file ) {
  */
 function se_block_locations(): array {
     return [
-        'site_top'       => __( 'Site top', 'se-sitewide-block' ),
-        'before_content' => __( 'Before content', 'se-sitewide-block' ),
-        'after_content'  => __( 'After content', 'se-sitewide-block' ),
-        'before_footer'  => __( 'Before footer', 'se-sitewide-block' ),
+        'site_top'       => __( 'Site top', 'sitewide-blocks' ),
+        'before_content' => __( 'Before content', 'sitewide-blocks' ),
+        'after_content'  => __( 'After content', 'sitewide-blocks' ),
+        'before_footer'  => __( 'Before footer', 'sitewide-blocks' ),
     ];
 }
 
@@ -41,16 +41,16 @@ function se_block_locations(): array {
 add_action( 'init', function () {
     register_post_type( 'sitewide_block', [
         'labels' => [
-            'name'               => __( 'Sitewide Blocks', 'se-sitewide-block' ),
-            'singular_name'      => __( 'Sitewide Block', 'se-sitewide-block' ),
-            'add_new'            => __( 'Add New Block', 'se-sitewide-block' ),
-            'add_new_item'       => __( 'Add New Block', 'se-sitewide-block' ),
-            'edit_item'          => __( 'Edit Block', 'se-sitewide-block' ),
-            'new_item'           => __( 'New Block', 'se-sitewide-block' ),
-            'view_item'          => __( 'View Block', 'se-sitewide-block' ),
-            'search_items'       => __( 'Search Blocks', 'se-sitewide-block' ),
-            'not_found'          => __( 'No blocks found', 'se-sitewide-block' ),
-            'not_found_in_trash' => __( 'No blocks found in trash', 'se-sitewide-block' ),
+            'name'               => __( 'Sitewide Blocks', 'sitewide-blocks' ),
+            'singular_name'      => __( 'Sitewide Block', 'sitewide-blocks' ),
+            'add_new'            => __( 'Add New Block', 'sitewide-blocks' ),
+            'add_new_item'       => __( 'Add New Block', 'sitewide-blocks' ),
+            'edit_item'          => __( 'Edit Block', 'sitewide-blocks' ),
+            'new_item'           => __( 'New Block', 'sitewide-blocks' ),
+            'view_item'          => __( 'View Block', 'sitewide-blocks' ),
+            'search_items'       => __( 'Search Blocks', 'sitewide-blocks' ),
+            'not_found'          => __( 'No blocks found', 'sitewide-blocks' ),
+            'not_found_in_trash' => __( 'No blocks found in trash', 'sitewide-blocks' ),
         ],
         'public'              => true,
         'publicly_queryable'  => true,   // needed for preview / View links
@@ -102,7 +102,7 @@ add_action( 'admin_notices', function () {
         // Classic editor notice
         printf(
             '<div class="notice notice-warning is-dismissible"><p>%s</p></div>',
-            esc_html__( 'This block is published but has no location or custom hook assigned — it will not appear anywhere.', 'se-sitewide-block' )
+            esc_html__( 'This block is published but has no location or custom hook assigned — it will not appear anywhere.', 'sitewide-blocks' )
         );
     }
 } );
@@ -116,7 +116,7 @@ add_action( 'enqueue_block_editor_assets', function () {
     $custom_hooks = array_filter( (array) get_post_meta( $post->ID, '_block_custom_hooks', true ) );
 
     if ( empty( $locations ) && empty( $custom_hooks ) ) {
-        $msg = esc_js( __( 'This block is published but has no location or custom hook assigned — it will not appear anywhere.', 'se-sitewide-block' ) );
+        $msg = esc_js( __( 'This block is published but has no location or custom hook assigned — it will not appear anywhere.', 'sitewide-blocks' ) );
         wp_add_inline_script( 'wp-notices', "wp.data.dispatch('core/notices').createWarningNotice('{$msg}',{id:'se-block-no-location',isDismissible:true});" );
     }
 } );
@@ -124,21 +124,21 @@ add_action( 'enqueue_block_editor_assets', function () {
 add_action( 'add_meta_boxes', function () {
     add_meta_box(
         'se_block_location',
-        __( 'Location', 'se-sitewide-block' ),
+        __( 'Location', 'sitewide-blocks' ),
         'se_block_location_cb',
         'sitewide_block',
         'normal'
     );
     add_meta_box(
         'se_block_schedule',
-        __( 'Schedule', 'se-sitewide-block' ),
+        __( 'Schedule', 'sitewide-blocks' ),
         'se_block_schedule_cb',
         'sitewide_block',
         'normal'
     );
     add_meta_box(
         'se_block_visibility',
-        __( 'Visibility', 'se-sitewide-block' ),
+        __( 'Visibility', 'sitewide-blocks' ),
         'se_block_visibility_cb',
         'sitewide_block',
         'normal'
@@ -168,7 +168,7 @@ function se_block_location_cb( WP_Post $post ): void {
     }
     ?>
     <div id="se-block-custom-hooks" style="margin-top:12px;border-top:1px solid #ddd;padding-top:8px">
-        <strong><?php esc_html_e( 'Custom hooks', 'se-sitewide-block' ); ?></strong>
+        <strong><?php esc_html_e( 'Custom hooks', 'sitewide-blocks' ); ?></strong>
         <input type="hidden" name="_block_custom_hooks_present" value="1">
         <div id="se-block-hooks-list">
             <?php foreach ( $custom_hooks as $i => $entry ) :
@@ -178,18 +178,18 @@ function se_block_location_cb( WP_Post $post ): void {
             <div class="se-block-hook-row" style="margin:6px 0;display:flex;gap:4px;align-items:center">
                 <input type="text" name="_block_custom_hooks[<?php echo $i; ?>][hook]"
                     value="<?php echo esc_attr( $hook ); ?>"
-                    placeholder="<?php esc_attr_e( 'action name', 'se-sitewide-block' ); ?>"
+                    placeholder="<?php esc_attr_e( 'action name', 'sitewide-blocks' ); ?>"
                     style="flex:1;min-width:0">
                 <input type="number" name="_block_custom_hooks[<?php echo $i; ?>][priority]"
                     value="<?php echo esc_attr( $priority ); ?>"
-                    title="<?php esc_attr_e( 'Priority', 'se-sitewide-block' ); ?>"
+                    title="<?php esc_attr_e( 'Priority', 'sitewide-blocks' ); ?>"
                     style="width:50px" min="0" step="1">
-                <button type="button" class="se-block-remove-hook button-link" title="<?php esc_attr_e( 'Remove', 'se-sitewide-block' ); ?>" style="color:#b32d2e;text-decoration:none">&times;</button>
+                <button type="button" class="se-block-remove-hook button-link" title="<?php esc_attr_e( 'Remove', 'sitewide-blocks' ); ?>" style="color:#b32d2e;text-decoration:none">&times;</button>
             </div>
             <?php endforeach; ?>
         </div>
         <button type="button" id="se-block-add-hook" class="button button-small" style="margin-top:4px">
-            <?php esc_html_e( '+ Add hook', 'se-sitewide-block' ); ?>
+            <?php esc_html_e( '+ Add hook', 'sitewide-blocks' ); ?>
         </button>
     </div>
     <script>
@@ -231,13 +231,13 @@ function se_block_schedule_cb( WP_Post $post ): void {
     $rec_end    = get_post_meta( $post->ID, '_block_recurring_time_end', true );
 
     $days_of_week = [
-        'mon' => __( 'Mon', 'se-sitewide-block' ),
-        'tue' => __( 'Tue', 'se-sitewide-block' ),
-        'wed' => __( 'Wed', 'se-sitewide-block' ),
-        'thu' => __( 'Thu', 'se-sitewide-block' ),
-        'fri' => __( 'Fri', 'se-sitewide-block' ),
-        'sat' => __( 'Sat', 'se-sitewide-block' ),
-        'sun' => __( 'Sun', 'se-sitewide-block' ),
+        'mon' => __( 'Mon', 'sitewide-blocks' ),
+        'tue' => __( 'Tue', 'sitewide-blocks' ),
+        'wed' => __( 'Wed', 'sitewide-blocks' ),
+        'thu' => __( 'Thu', 'sitewide-blocks' ),
+        'fri' => __( 'Fri', 'sitewide-blocks' ),
+        'sat' => __( 'Sat', 'sitewide-blocks' ),
+        'sun' => __( 'Sun', 'sitewide-blocks' ),
     ];
     ?>
     <style>
@@ -249,22 +249,22 @@ function se_block_schedule_cb( WP_Post $post ): void {
     </style>
 
     <div class="se-block-schedule-row">
-        <label for="_block_schedule_type"><?php esc_html_e( 'Type', 'se-sitewide-block' ); ?></label>
+        <label for="_block_schedule_type"><?php esc_html_e( 'Type', 'sitewide-blocks' ); ?></label>
         <select id="_block_schedule_type" name="_block_schedule_type">
-            <option value="always"    <?php selected( $type, 'always' ); ?>><?php esc_html_e( 'Always On', 'se-sitewide-block' ); ?></option>
-            <option value="scheduled" <?php selected( $type, 'scheduled' ); ?>><?php esc_html_e( 'Date Range', 'se-sitewide-block' ); ?></option>
-            <option value="recurring" <?php selected( $type, 'recurring' ); ?>><?php esc_html_e( 'Recurring', 'se-sitewide-block' ); ?></option>
+            <option value="always"    <?php selected( $type, 'always' ); ?>><?php esc_html_e( 'Always On', 'sitewide-blocks' ); ?></option>
+            <option value="scheduled" <?php selected( $type, 'scheduled' ); ?>><?php esc_html_e( 'Date Range', 'sitewide-blocks' ); ?></option>
+            <option value="recurring" <?php selected( $type, 'recurring' ); ?>><?php esc_html_e( 'Recurring', 'sitewide-blocks' ); ?></option>
         </select>
     </div>
 
     <!-- Date Range panel -->
     <div id="se-block-panel-scheduled" class="se-block-panel <?php echo $type === 'scheduled' ? 'active' : ''; ?>">
         <div class="se-block-schedule-row">
-            <label for="_block_start"><?php esc_html_e( 'Start', 'se-sitewide-block' ); ?></label>
+            <label for="_block_start"><?php esc_html_e( 'Start', 'sitewide-blocks' ); ?></label>
             <input type="datetime-local" id="_block_start" name="_block_start" value="<?php echo esc_attr( $start ); ?>">
         </div>
         <div class="se-block-schedule-row">
-            <label for="_block_end"><?php esc_html_e( 'End', 'se-sitewide-block' ); ?></label>
+            <label for="_block_end"><?php esc_html_e( 'End', 'sitewide-blocks' ); ?></label>
             <input type="datetime-local" id="_block_end" name="_block_end" value="<?php echo esc_attr( $end ); ?>">
         </div>
     </div>
@@ -272,7 +272,7 @@ function se_block_schedule_cb( WP_Post $post ): void {
     <!-- Recurring panel -->
     <div id="se-block-panel-recurring" class="se-block-panel <?php echo $type === 'recurring' ? 'active' : ''; ?>">
         <div class="se-block-schedule-row se-block-days">
-            <label style="display:block;margin-bottom:4px"><?php esc_html_e( 'Days', 'se-sitewide-block' ); ?></label>
+            <label style="display:block;margin-bottom:4px"><?php esc_html_e( 'Days', 'sitewide-blocks' ); ?></label>
             <?php foreach ( $days_of_week as $val => $lbl ) : ?>
                 <label>
                     <input type="checkbox" name="_block_recurring_days[]" value="<?php echo esc_attr( $val ); ?>"
@@ -282,19 +282,19 @@ function se_block_schedule_cb( WP_Post $post ): void {
             <?php endforeach; ?>
         </div>
         <div class="se-block-schedule-row">
-            <label for="_block_recurring_time_start"><?php esc_html_e( 'From', 'se-sitewide-block' ); ?></label>
+            <label for="_block_recurring_time_start"><?php esc_html_e( 'From', 'sitewide-blocks' ); ?></label>
             <input type="time" id="_block_recurring_time_start" name="_block_recurring_time_start" value="<?php echo esc_attr( $rec_start ); ?>">
         </div>
         <div class="se-block-schedule-row">
-            <label for="_block_recurring_time_end"><?php esc_html_e( 'To', 'se-sitewide-block' ); ?></label>
+            <label for="_block_recurring_time_end"><?php esc_html_e( 'To', 'sitewide-blocks' ); ?></label>
             <input type="time" id="_block_recurring_time_end" name="_block_recurring_time_end" value="<?php echo esc_attr( $rec_end ); ?>">
         </div>
         <div class="se-block-schedule-row">
-            <label for="_block_start_recurring"><?php esc_html_e( 'Active from', 'se-sitewide-block' ); ?></label>
+            <label for="_block_start_recurring"><?php esc_html_e( 'Active from', 'sitewide-blocks' ); ?></label>
             <input type="date" id="_block_start_recurring" name="_block_start" value="<?php echo esc_attr( $start ? substr( $start, 0, 10 ) : '' ); ?>">
         </div>
         <div class="se-block-schedule-row">
-            <label for="_block_end_recurring"><?php esc_html_e( 'Active until', 'se-sitewide-block' ); ?></label>
+            <label for="_block_end_recurring"><?php esc_html_e( 'Active until', 'sitewide-blocks' ); ?></label>
             <input type="date" id="_block_end_recurring" name="_block_end" value="<?php echo esc_attr( $end ? substr( $end, 0, 10 ) : '' ); ?>">
         </div>
     </div>
@@ -319,8 +319,8 @@ function se_block_schedule_cb( WP_Post $post ): void {
  */
 function se_block_page_types(): array {
     $singles = [
-        'single_post' => __( 'Posts', 'se-sitewide-block' ),
-        'single_page' => __( 'Pages', 'se-sitewide-block' ),
+        'single_post' => __( 'Posts', 'sitewide-blocks' ),
+        'single_page' => __( 'Pages', 'sitewide-blocks' ),
     ];
     foreach ( get_post_types( [ 'public' => true, '_builtin' => false ], 'objects' ) as $pt ) {
         if ( $pt->name === 'sitewide_block' ) continue;
@@ -328,30 +328,30 @@ function se_block_page_types(): array {
     }
 
     $archives = [
-        'archive_category' => __( 'Category archives', 'se-sitewide-block' ),
-        'archive_post_tag' => __( 'Tag archives', 'se-sitewide-block' ),
-        'archive_date'     => __( 'Date archives', 'se-sitewide-block' ),
-        'archive_author'   => __( 'Author archives', 'se-sitewide-block' ),
+        'archive_category' => __( 'Category archives', 'sitewide-blocks' ),
+        'archive_post_tag' => __( 'Tag archives', 'sitewide-blocks' ),
+        'archive_date'     => __( 'Date archives', 'sitewide-blocks' ),
+        'archive_author'   => __( 'Author archives', 'sitewide-blocks' ),
     ];
     foreach ( get_post_types( [ 'public' => true, '_builtin' => false, 'has_archive' => true ], 'objects' ) as $pt ) {
         if ( $pt->name === 'sitewide_block' ) continue;
-        $archives[ 'archive_' . $pt->name ] = sprintf( __( '%s archive', 'se-sitewide-block' ), $pt->labels->singular_name );
+        $archives[ 'archive_' . $pt->name ] = sprintf( __( '%s archive', 'sitewide-blocks' ), $pt->labels->singular_name );
     }
     foreach ( get_taxonomies( [ 'public' => true, '_builtin' => false ], 'objects' ) as $tax ) {
-        $archives[ 'archive_tax_' . $tax->name ] = sprintf( __( '%s archives', 'se-sitewide-block' ), $tax->labels->singular_name );
+        $archives[ 'archive_tax_' . $tax->name ] = sprintf( __( '%s archives', 'sitewide-blocks' ), $tax->labels->singular_name );
     }
 
     $special = [
-        'front_page'  => __( 'Home page (front page)', 'se-sitewide-block' ),
-        'posts_page'  => __( 'Posts page (blog index)', 'se-sitewide-block' ),
-        'search'      => __( 'Search results', 'se-sitewide-block' ),
-        '404'         => __( '404', 'se-sitewide-block' ),
+        'front_page'  => __( 'Home page (front page)', 'sitewide-blocks' ),
+        'posts_page'  => __( 'Posts page (blog index)', 'sitewide-blocks' ),
+        'search'      => __( 'Search results', 'sitewide-blocks' ),
+        '404'         => __( '404', 'sitewide-blocks' ),
     ];
 
     return [
-        __( 'Singles', 'se-sitewide-block' )  => $singles,
-        __( 'Archives', 'se-sitewide-block' ) => $archives,
-        __( 'Special', 'se-sitewide-block' )  => $special,
+        __( 'Singles', 'sitewide-blocks' )  => $singles,
+        __( 'Archives', 'sitewide-blocks' ) => $archives,
+        __( 'Special', 'sitewide-blocks' )  => $special,
     ];
 }
 
@@ -435,7 +435,7 @@ function se_block_visibility_cb( WP_Post $post ): void {
 
     <!-- Page types -->
     <div class="se-block-vis-group">
-        <p class="description"><?php esc_html_e( 'Leave all unchecked to show everywhere.', 'se-sitewide-block' ); ?></p>
+        <p class="description"><?php esc_html_e( 'Leave all unchecked to show everywhere.', 'sitewide-blocks' ); ?></p>
         <?php foreach ( se_block_page_types() as $group_label => $types ) : ?>
             <h4><?php echo esc_html( $group_label ); ?></h4>
             <?php foreach ( $types as $value => $label ) : ?>
@@ -450,8 +450,8 @@ function se_block_visibility_cb( WP_Post $post ): void {
 
     <?php
     foreach ( [
-        '_block_show_terms' => [ __( 'Show on these terms', 'se-sitewide-block' ), $show_by_tax ],
-        '_block_hide_terms' => [ __( 'Hide on these terms', 'se-sitewide-block' ), $hide_by_tax ],
+        '_block_show_terms' => [ __( 'Show on these terms', 'sitewide-blocks' ), $show_by_tax ],
+        '_block_hide_terms' => [ __( 'Hide on these terms', 'sitewide-blocks' ), $hide_by_tax ],
     ] as $field_name => [ $heading, $saved_by_tax ] ) :
         $uid = str_replace( [ '[', ']', '_' ], '-', $field_name );
     ?>
@@ -470,7 +470,7 @@ function se_block_visibility_cb( WP_Post $post ): void {
         ?>
         <div class="se-block-tab-panel <?php echo $first ? 'active' : ''; ?>" id="<?php echo esc_attr( $uid . '-' . $tax->name ); ?>">
             <?php if ( $term_count > 10 ) : ?>
-                <input type="text" class="se-block-term-search" placeholder="<?php esc_attr_e( 'Filter…', 'se-sitewide-block' ); ?>">
+                <input type="text" class="se-block-term-search" placeholder="<?php esc_attr_e( 'Filter…', 'sitewide-blocks' ); ?>">
             <?php endif; ?>
             <?php
             if ( $term_count > 0 ) {
@@ -484,7 +484,7 @@ function se_block_visibility_cb( WP_Post $post ): void {
                     'checked_ontop' => false,
                 ] );
             } else {
-                echo '<p class="description">' . esc_html__( 'No terms.', 'se-sitewide-block' ) . '</p>';
+                echo '<p class="description">' . esc_html__( 'No terms.', 'sitewide-blocks' ) . '</p>';
             }
             ?>
         </div>
@@ -494,14 +494,14 @@ function se_block_visibility_cb( WP_Post $post ): void {
 
     <!-- Show / Hide on post IDs -->
     <div class="se-block-vis-section">
-        <strong><?php esc_html_e( 'Show on post IDs', 'se-sitewide-block' ); ?></strong>
+        <strong><?php esc_html_e( 'Show on post IDs', 'sitewide-blocks' ); ?></strong>
         <input type="text" name="_block_show_ids" value="<?php echo esc_attr( $show_ids ); ?>"
-            placeholder="<?php esc_attr_e( 'e.g. 12, 345, 678', 'se-sitewide-block' ); ?>" class="widefat">
+            placeholder="<?php esc_attr_e( 'e.g. 12, 345, 678', 'sitewide-blocks' ); ?>" class="widefat">
     </div>
     <div class="se-block-vis-section">
-        <strong><?php esc_html_e( 'Hide on post IDs', 'se-sitewide-block' ); ?></strong>
+        <strong><?php esc_html_e( 'Hide on post IDs', 'sitewide-blocks' ); ?></strong>
         <input type="text" name="_block_hide_ids" value="<?php echo esc_attr( $hide_ids ); ?>"
-            placeholder="<?php esc_attr_e( 'e.g. 12, 345, 678', 'se-sitewide-block' ); ?>" class="widefat">
+            placeholder="<?php esc_attr_e( 'e.g. 12, 345, 678', 'sitewide-blocks' ); ?>" class="widefat">
     </div>
 
     <script>
@@ -616,8 +616,8 @@ add_filter( 'manage_sitewide_block_posts_columns', function ( array $columns ): 
     foreach ( $columns as $key => $label ) {
         $new[ $key ] = $label;
         if ( $key === 'title' ) {
-            $new['placement'] = __( 'Placement', 'se-sitewide-block' );
-            $new['schedule']  = __( 'Schedule', 'se-sitewide-block' );
+            $new['placement'] = __( 'Placement', 'sitewide-blocks' );
+            $new['schedule']  = __( 'Schedule', 'sitewide-blocks' );
         }
     }
     return $new;
@@ -643,7 +643,7 @@ add_action( 'manage_sitewide_block_posts_custom_column', function ( string $colu
         $end   = get_post_meta( $post_id, '_block_end', true );
 
         if ( $type === 'always' ) {
-            echo esc_html__( 'Always on', 'se-sitewide-block' );
+            echo esc_html__( 'Always on', 'sitewide-blocks' );
             return;
         }
 
@@ -663,7 +663,7 @@ add_action( 'manage_sitewide_block_posts_custom_column', function ( string $colu
             if ( $days )      $parts[] = implode( ', ', array_map( 'ucfirst', $days ) );
             if ( $rec_start ) $parts[] = $rec_start;
             if ( $rec_end )   $parts[] = '– ' . $rec_end;
-            echo esc_html( implode( ' ', $parts ) ?: __( 'Recurring', 'se-sitewide-block' ) );
+            echo esc_html( implode( ' ', $parts ) ?: __( 'Recurring', 'sitewide-blocks' ) );
         }
     }
 }, 10, 2 );
@@ -736,9 +736,9 @@ add_action( 'admin_notices', function () {
     );
     printf(
         '<div class="notice notice-info"><p>%s <a href="%s">%s</a></p></div>',
-        esc_html__( 'Blocks are displayed in custom order.', 'se-sitewide-block' ),
+        esc_html__( 'Blocks are displayed in custom order.', 'sitewide-blocks' ),
         esc_url( $unsort_url ),
-        esc_html__( 'Unsort', 'se-sitewide-block' )
+        esc_html__( 'Unsort', 'sitewide-blocks' )
     );
 } );
 
@@ -1014,7 +1014,7 @@ function se_block_render( string $location ): void {
 
     foreach ( $blocks as $block ) {
         printf(
-            '<div class="se-sitewide-block se-sitewide-block--%s" data-block-id="%d">%s</div>',
+            '<div class="sitewide-blocks sitewide-blocks--%s" data-block-id="%d">%s</div>',
             esc_attr( $location ),
             $block->ID,
             apply_filters( 'the_content', $block->post_content )
@@ -1101,7 +1101,7 @@ add_action( 'wp', function () {
                 }
 
                 printf(
-                    '<div class="se-sitewide-block se-sitewide-block--custom-hook" data-block-id="%d">%s</div>',
+                    '<div class="sitewide-blocks sitewide-blocks--custom-hook" data-block-id="%d">%s</div>',
                     $block_id,
                     apply_filters( 'the_content', $block->post_content )
                 );

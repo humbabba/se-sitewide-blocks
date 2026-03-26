@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/se-sitewide-block.iml" filepath="$PROJECT_DIR$/.idea/se-sitewide-block.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/sitewide-blocks.iml" filepath="$PROJECT_DIR$/.idea/sitewide-blocks.iml" />
     </modules>
   </component>
 </project>
