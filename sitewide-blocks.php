@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: SE Sitewide Blocks
+ * Plugin Name: Sitewide Blocks
  * Description: Custom post type for scheduled, location-aware sitewide block content.
  * Version:     1.0.0
  * Plugin URI:  https://github.com/humbabba/sitewide-blocks
